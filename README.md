@@ -6,17 +6,22 @@ Este proyecto es un script en Python que realiza varias tareas automatizadas sob
 
 ## Funcionalidades
 
-1. **Copia y renombra archivos `.SMD`**:
+1. **Eliminación de la carpeta `source_txt`**:
+   - Antes de realizar cualquier operación, el script elimina la carpeta `source_txt` y todo su contenido si esta existe, garantizando que el proceso comience con un entorno limpio.
+
+2. **Copia y renombra archivos `.SMD`**:
    - El script crea una carpeta llamada `source_txt` dentro del directorio donde se ejecuta el script.
    - Copia todos los archivos `.SMD` (en cualquier combinación de mayúsculas y minúsculas) desde `c:/cosmos/samples` a `source_txt` y los renombra con la extensión `.TXT`.
 
-2. **Extracción de código**:
+3. **Extracción de código**:
    - En los archivos `.TXT` dentro de la carpeta `source_txt`, el script busca y extrae contenido entre las etiquetas `//{{CODEBEGIN` y `//{{CODEEND`.
    - El contenido extraído se guarda en archivos con la misma base de nombre, pero con la extensión `.gpt`, dentro de la carpeta `source_txt`.
+   - Durante la extracción, no se graban las líneas que comiencen por `//`.
 
-3. **Generación de archivo combinado**:
+4. **Generación de archivo combinado**:
    - El script crea una carpeta `result` dentro del proyecto y genera un archivo llamado `source_train_sample_cosmos_AAAAMMDD.txt`, donde `AAAAMMDD` es la fecha en formato año-mes-día.
    - Este archivo contiene la concatenación de todo el código extraído desde los archivos `.GPT` que se encuentran en la carpeta `source_txt`.
+   - Durante la generación del archivo final, también se omiten las líneas que comienzan por `//`.
 
 ## Requisitos
 

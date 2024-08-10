@@ -2,6 +2,12 @@ import os
 import shutil
 from datetime import datetime
 
+def eliminar_carpeta_source_txt(directorio_proyecto):
+    # Eliminar la carpeta "source_txt" si existe
+    carpeta_txt = os.path.join(directorio_proyecto, "source_txt")
+    if os.path.exists(carpeta_txt):
+        shutil.rmtree(carpeta_txt)
+
 def copiar_renombrar_smd_a_txt(directorio_origen, directorio_proyecto):
     # Crear la carpeta "source_txt" dentro del proyecto si no existe
     carpeta_destino = os.path.join(directorio_proyecto, "source_txt")
@@ -34,7 +40,7 @@ def extraer_codigos_txt_a_gpt(directorio_proyecto):
                         guardar = False
                         continue  # No graba esta línea
                     
-                    if guardar:
+                    if guardar and not linea.strip().startswith("//"):
                         archivo_gpt.write(linea)
 
 def generar_fichero_resultado(directorio_proyecto):
@@ -56,7 +62,9 @@ def generar_fichero_resultado(directorio_proyecto):
             if nombre_archivo.lower().endswith('.gpt'):
                 ruta_archivo_gpt = os.path.join(carpeta_txt, nombre_archivo)
                 with open(ruta_archivo_gpt, 'r') as archivo_gpt:
-                    archivo_salida.write(archivo_gpt.read())
+                    for linea in archivo_gpt:
+                        if not linea.strip().startswith("//"):
+                            archivo_salida.write(linea)
                     archivo_salida.write("\n")  # Agrega un salto de línea entre contenidos
 
 if __name__ == "__main__":
@@ -64,6 +72,7 @@ if __name__ == "__main__":
     directorio_origen = "c:/cosmos/samples"
     directorio_proyecto = os.getcwd()  # Carpeta donde se ejecuta el script de Python
     
+    eliminar_carpeta_source_txt(directorio_proyecto)
     copiar_renombrar_smd_a_txt(directorio_origen, directorio_proyecto)
     extraer_codigos_txt_a_gpt(directorio_proyecto)
     generar_fichero_resultado(directorio_proyecto)
